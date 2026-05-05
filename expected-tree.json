@@ -1,0 +1,63 @@
+{
+    "schema_version": "1.0",
+    "pm": "sbt",
+    "sbt_version_tested": "1.9.8",
+    "scala_version_tested": "2.13.12",
+    "java_version_tested": "17",
+    "source_file": "build.sbt",
+    "manifest": "build.sbt",
+    "lockfile": null,
+    "detection_mode": "build-manifest-coursier",
+    "pattern": "version-dependency-override-force-down",
+    "notes": "Single-project sbt build. One direct dependency: cats-core_2.13 2.10.0 (Scala %% artifact). dependencyOverrides forces the transitive cats-kernel_2.13 DOWN from its natural resolution of 2.10.0 (as declared in cats-core 2.10.0's POM) to 2.9.0. Coursier's highest-wins eviction would normally keep 2.10.0; the override beats it. Mend must report cats-kernel_2.13:2.9.0, NOT 2.10.0. Wave 1 probe #3 of sbt versioning coverage.",
+    "packages": [
+        {
+            "groupId": "org.typelevel",
+            "artifactId": "cats-core_2.13",
+            "version": "2.10.0",
+            "version_constraint": "2.10.0",
+            "scope": "compile",
+            "group": "main",
+            "source": "registry",
+            "direct": true,
+            "children": [
+                {
+                    "groupId": "org.typelevel",
+                    "artifactId": "cats-kernel_2.13",
+                    "version": "2.9.0",
+                    "version_constraint": "2.9.0",
+                    "scope": "compile",
+                    "group": "main",
+                    "source": "registry",
+                    "direct": false,
+                    "children": []
+                }
+            ]
+        }
+    ],
+    "total_packages": 2,
+    "direct_count": 1,
+    "transitive_count": 1,
+    "unique_packages": [
+        "org.typelevel:cats-core_2.13:2.10.0",
+        "org.typelevel:cats-kernel_2.13:2.9.0"
+    ],
+    "mend_detection_expectations": {
+        "all_packages_must_appear": true,
+        "source_for_all": "registry",
+        "group_for_all": "main",
+        "no_missing_transitives": true,
+        "scala_suffix_preserved": true,
+        "dependency_override_honored": true,
+        "override_direction": "force-down",
+        "override_note": "Mend must report `cats-kernel_2.13:2.9.0` (the override), NOT `cats-kernel_2.13:2.10.0` (natural resolution from cats-core 2.10.0). The dependencyOverrides setting forces the transitive below the version declared in cats-core's POM, beating Coursier's highest-wins eviction.",
+        "artifactId_format_note": "Scala %% artifacts carry _2.13 binary suffix in artifactId. Assert on cats-core_2.13 and cats-kernel_2.13, never on bare names.",
+        "failure_modes_exercised": [
+            "Override ignored -- natural resolution `2.10.0` reported instead of overridden `2.9.0`",
+            "Both `2.9.0` and `2.10.0` reported (duplicate) -- override and natural resolution not merged",
+            "cats-kernel_2.13 missing entirely -- POM traversal broken by downgraded override",
+            "Scala binary suffix stripped -- cats-kernel reported instead of cats-kernel_2.13",
+            "cats-kernel_2.13:2.9.0 classified as direct because dependencyOverrides is a top-level setting"
+        ]
+    }
+}
