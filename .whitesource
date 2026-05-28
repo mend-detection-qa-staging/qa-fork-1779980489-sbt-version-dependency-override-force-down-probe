@@ -5,14 +5,22 @@
     "projectToken": "",
     "baseBranches": [],
     "versioning": {
-      "sbt":   "1.9.8",
+      "sbt": "1.9.8",
       "scala": "2.13.12",
-      "java":  "17"
+      "java": "17"
     }
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",
     "displayMode": "diff",
     "useMendCheckNames": true
+  },
+  "scanSettingsSAST": {
+    "enableScan": false
+  },
+  "remediateSettings": {
+    "workflowRules": {
+      "enabled": false
+    }
   }
 }
